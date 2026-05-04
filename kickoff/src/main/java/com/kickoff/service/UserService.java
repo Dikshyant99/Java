@@ -9,14 +9,14 @@ public class UserService {
 
     private UserDAO userDAO = new UserDAO();
 
-    // ===== REGISTRATION =====
+    // REGISTRATION 
     // Validates all input then saves new user to database
     // Returns "success" or a specific error message string
     public String registerUser(String firstName, String lastName,
                                String email,     String phone,
                                String sport,     String skillLevel,
                                String password,  String confirmPassword,
-                               String image) {   // <-- added image parameter
+                               String image) {   
 
         // Check required fields are not empty
         if (ValidationUtil.isNullOrEmpty(firstName) ||
@@ -66,27 +66,27 @@ public class UserService {
             return "This phone number is already registered.";
         }
 
-        // Hash password before saving - never store plain text
+        // Hash password before saving , never store plain text
         String hashedPassword = PasswordUtil.hash(password);
 
         // Create User object with image and save to database
         User user = new User(firstName, lastName, email, phone,
-                             sport, skillLevel, hashedPassword, "user", image); // <-- pass image
+                             sport, skillLevel, hashedPassword, "user", image); 
 
         boolean saved = userDAO.registerUser(user);
         return saved ? "success" : "Registration failed. Please try again.";
     }
 
-    // ===== CHECK LOGIN =====
+    // CHECK LOGIN
     // Validates input first then calls DAO for database check
     // Returns specific string telling exactly what happened:
-    // "success"        → credentials correct
-    // "wrong_password" → email found but password wrong
-    // "user_not_found" → no account with this email
-    // "email_empty"    → email field was blank
-    // "password_empty" → password field was blank
-    // "invalid_email"  → email format is wrong
-    // "error"          → database error
+    // "success"   :credentials correct
+    // "wrong_password" :email found but password wrong
+    // "user_not_found" :no account with this email
+    // "email_empty"   :email field was blank
+    // "password_empty" : password field was blank
+    // "invalid_email"  :email format is wrong
+    // "error"         :database error
     public String checkLogin(String email, String password) {
 
         // Check email is not empty
@@ -109,7 +109,7 @@ public class UserService {
         return userDAO.checkLogin(email, password);
     }
 
-    // ===== GET USER BY EMAIL =====
+    //  GET USER BY EMAIL 
     // Called after checkLogin() returns "success"
     // Returns the full User object so servlet can store user details
     public User getUserByEmail(String email) {

@@ -1,48 +1,55 @@
 package com.kickoff.controller;
 
+import com.kickoff.dao.UserDAO;
 import com.kickoff.model.User;
-import com.kickoff.service.UserService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebServlet("/profile")
+@WebServlet(asyncSupported=true,urlPatterns={"/ProfileServlet"})
 public class ProfileServlet extends HttpServlet {
+
     private static final long serialVersionUID = 1L;
-    private UserService userService = new UserService();
+    private UserDAO userDAO = new UserDAO();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Check session - redirect to login if not logged in
-        HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("email") == null) {
-            response.sendRedirect(request.getContextPath() + "/Pages/Auth/login.jsp");
-            return;
-        }
-
         // Get logged in user's email from session
-        String email = session.getAttribute("email").toString();
+        String email = (String) request.getSession().getAttribute("email");
 
-        // Fetch full user details from database
-        User user = userService.getUserByEmail(email);
-
-        // If user not found redirect to login
-        if (user == null) {
-            response.sendRedirect(request.getContextPath() + "/Pages/Auth/login.jsp");
+        if (email == null) {
+            // Not logged in - redirect to login
+            response.sendRedirect(request.getContextPath()
+                + "/Pages/Auth/login.jsp");
             return;
         }
 
-        // Attach user object to request for JSP rendering
+        // Fetch fresh user data from database
+        User user = userDAO.getUserByEmail(email);
+
+        if (user == null) {
+            // User not found in database
+            response.sendRedirect(request.getContextPath()
+                + "/Pages/Auth/login.jsp");
+            return;
+        }
+
+        // Pass user object to JSP
         request.setAttribute("user", user);
 
-        // Forward to Profile JSP
-        request.getRequestDispatcher("/Pages/User/Profile.jsp")
+        // Forward to profile page
+        request.getRequestDispatcher("/Pages/User/profile.jsp")
                .forward(request, response);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        doGet(request, response);
     }
 }

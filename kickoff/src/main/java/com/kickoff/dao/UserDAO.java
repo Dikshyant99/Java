@@ -6,14 +6,14 @@ import com.kickoff.util.PasswordUtil;
 import java.sql.*;
 
 public class UserDAO {
-
-    // ===== CHECK LOGIN =====
+	
+    // CHECK LOGIN 
     // Checks if email exists first, then verifies password
     // Returns specific string telling exactly what happened
-    // "success"        → email found AND password matched
-    // "wrong_password" → email found BUT password is wrong
-    // "user_not_found" → no account with this email in database
-    // "error"          → something went wrong with database
+    // "success" :email found AND password matched
+    // "wrong_password": email found BUT password is wrong
+    // "user_not_found" : no account with this email in database
+    // "error" : something went wrong with database
     public String checkLogin(String email, String password) {
         String sql = "SELECT * FROM users WHERE email = ?";
 
@@ -47,8 +47,7 @@ public class UserDAO {
             return "error";
         }
     }
-
-    // ===== REGISTER USER =====
+    // REGISTER NEW USER 
     // Inserts a new user row into the database during registration
     // Returns true if insert succeeded, false if it failed
     public boolean registerUser(User user) {
@@ -65,9 +64,9 @@ public class UserDAO {
             ps.setString(4, user.getPhone());
             ps.setString(5, user.getSport());
             ps.setString(6, user.getSkillLevel());
-            ps.setString(7, user.getPassword()); // already hashed by Service
+            ps.setString(7, user.getPassword()); 
             ps.setString(8, user.getRole());
-            ps.setString(9, user.getImage());    // <-- image path
+            ps.setString(9, user.getImage());    
 
             return ps.executeUpdate() > 0;
 
@@ -77,7 +76,7 @@ public class UserDAO {
         }
     }
 
-    // ===== GET USER BY EMAIL =====
+    // GET USER BY EMAIL 
     // Returns full User object after successful login
     // Called only after checkLogin() returns "success"
     // Returns null if no user found
@@ -103,7 +102,7 @@ public class UserDAO {
                 u.setPassword(rs.getString("password"));
                 u.setRole(rs.getString("role"));
                 u.setCreatedAt(rs.getString("created_at"));
-                u.setImage(rs.getString("image"));   // <-- image path
+                u.setImage(rs.getString("image"));
                 return u;
             }
 
@@ -131,7 +130,7 @@ public class UserDAO {
         }
     }
 
-    // ===== PHONE EXISTS =====
+    // PHONE EXISTS 
     // Checks if phone already exists in database
     // Used during registration to prevent duplicate phone numbers
     public boolean phoneExists(String phone) {
@@ -148,4 +147,27 @@ public class UserDAO {
             return false;
         }
     }
+ 
+//Update user   
+public boolean updateUser(User user) {
+    String sql = "UPDATE users SET first_name=?, last_name=?, email=?, phone=?, sport=?, skill_level=?,image=? WHERE user_id=?";
+    try (Connection conn = DBUtil.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+        ps.setString(1, user.getFirstName());
+        ps.setString(2, user.getLastName());
+        ps.setString(3, user.getEmail());
+        ps.setString(4, user.getPhone());
+        ps.setString(5, user.getSport());
+        ps.setString(6, user.getSkillLevel());
+        ps.setString(7,user.getImage());
+        ps.setInt(8, user.getUserId());
+        
+        return ps.executeUpdate() > 0;
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
+    }
+}
 }

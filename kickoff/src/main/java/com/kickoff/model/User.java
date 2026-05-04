@@ -14,11 +14,12 @@ public class User {
     private String createdAt;
     private String image;
 
-    // Empty constructor - needed by UserDAO when reading from database
-    public User() {}
+    // Empty constructor:needed by UserDAO when reading from database
+    public User() {
+    	
+    }
 
-    // Full constructor - must match exactly what UserService calls:
-    // new User(firstName, lastName, email, phone, sport, skillLevel, hashedPassword, "user")
+    // Full constructor :must match exactly what UserService calls:
     public User(String firstName, String lastName, String email,
                 String phone,    String sport,     String skillLevel,
                 String password, String role,String image) {
@@ -32,6 +33,7 @@ public class User {
         this.role       = role;
         this.image = image;
     }
+    
 
     // Getters and Setters
     public int    getUserId()                   
@@ -86,7 +88,7 @@ public class User {
     public void   setCreatedAt(String createdAt) 
     { this.createdAt = createdAt; }
 
-    // Helper - returns full name in one call
+    // Helper: returns full name in one call
     // Used in LoginServlet: user.getFirstName()
     public String getFullName() {
         return firstName + " " + lastName;
@@ -97,5 +99,6 @@ public class User {
     public void setImage(String image) {
     	this.image=image;
     }
+    
     
 }

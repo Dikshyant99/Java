@@ -35,9 +35,7 @@ body {
   text-decoration: none;
   letter-spacing: 1px;
 }
-.navbar_logo span {
-  color: #2a6fdb;
-}
+.navbar_logo span { color: #2a6fdb; }
 .navbar_links {
   display: flex;
   gap: 36px;
@@ -50,21 +48,22 @@ body {
   text-decoration: none;
   transition: color 0.2s;
 }
-.navbar_links a:hover {
-  color: #2a6fdb;
-}
+.navbar_links a:hover { color: #2a6fdb; }
 .navbar_avatar {
-  width: 38px;
-  height: 38px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   overflow: hidden;
   border: 2px solid #2a6fdb;
   cursor: pointer;
+  flex-shrink: 0;
 }
 .avatar_img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
+  display: block;
 }
 
 /* ===== LAYOUT ===== */
@@ -83,6 +82,7 @@ body {
   top: 68px;
   height: calc(100vh - 68px);
   overflow-y: auto;
+  flex-shrink: 0;
 }
 .sidebar_item {
   display: block;
@@ -117,7 +117,7 @@ body {
   background: #1a1a1a;
   border-radius: 16px;
   padding: 32px;
-  max-width: 680px;
+  max-width: 640px;
 }
 .profile_top {
   display: flex;
@@ -126,8 +126,10 @@ body {
   margin-bottom: 24px;
 }
 .profile_avatar {
-  width: 72px;
-  height: 72px;
+  width: 80px;
+  height: 80px;
+  min-width: 80px;
+  min-height: 80px;
   border-radius: 50%;
   background: #2a6fdb;
   color: #fff;
@@ -137,7 +139,20 @@ body {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  overflow: hidden;
+  border: 3px solid #2a6fdb;
 }
+.profile_avatar_img {
+  width: 80px;
+  height: 80px;
+  min-width: 80px;
+  min-height: 80px;
+  object-fit: cover;
+  object-position: top;
+  display: block;
+  border-radius: 50%;
+}
+.profile_info { flex: 1; }
 .profile_name {
   font-size: 1.3rem;
   font-weight: 600;
@@ -183,12 +198,8 @@ body {
 }
 
 /* ===== TEAM SECTION ===== */
-.team_section {
-  max-width: 720px;
-}
-.team_info {
-  margin-bottom: 24px;
-}
+.team_section { max-width: 720px; }
+.team_info { margin-bottom: 24px; }
 .team_name {
   font-size: 1.5rem;
   font-weight: 600;
@@ -224,9 +235,7 @@ body {
   justify-content: space-between;
   transition: transform 0.2s;
 }
-.member_item:hover {
-  transform: translateY(-2px);
-}
+.member_item:hover { transform: translateY(-2px); }
 .member_left {
   display: flex;
   align-items: center;
@@ -236,7 +245,7 @@ body {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255,255,255,0.2);
   color: #fff;
   font-size: 15px;
   font-weight: 600;
@@ -250,14 +259,9 @@ body {
   font-weight: 500;
   color: #fff;
 }
+.team_actions { display: flex; gap: 12px; }
 
-/* ===== TEAM ACTIONS ===== */
-.team_actions {
-  display: flex;
-  gap: 12px;
-}
-
-/* ===== NO TEAM STATE ===== */
+/* ===== NO TEAM ===== */
 .no_team {
   text-align: center;
   padding: 60px 40px;
@@ -294,9 +298,7 @@ body {
   justify-content: space-between;
   transition: transform 0.2s;
 }
-.booking_item:hover {
-  transform: translateY(-2px);
-}
+.booking_item:hover { transform: translateY(-2px); }
 .booking_name {
   font-size: 0.95rem;
   font-weight: 600;
@@ -327,7 +329,7 @@ body {
 .badge_yellow  { background: #f5a623; color: #5a3800; }
 .badge_red     { background: #e53e3e; color: #ffffff; }
 .badge_blue    { background: #2a6fdb; color: #ffffff; }
-.badge_captain { background: rgba(255, 255, 255, 0.25); color: #fff; }
+.badge_captain { background: rgba(255,255,255,0.25); color: #fff; }
 
 /* ===== BUTTONS ===== */
 .btn {
@@ -342,36 +344,18 @@ body {
   transition: all 0.2s;
   display: inline-block;
 }
-.btn_primary {
-  background: #2a6fdb;
-  color: #fff;
-}
-.btn_primary:hover {
-  background: #1a5fc8;
-}
+.btn_primary { background: #2a6fdb; color: #fff; }
+.btn_primary:hover { background: #1a5fc8; }
 .btn_outline {
   background: transparent;
   border: 2px solid #2a6fdb;
   color: #2a6fdb;
 }
-.btn_outline:hover {
-  background: #2a6fdb;
-  color: #fff;
-}
-.btn_red {
-  background: #e53e3e;
-  color: #fff;
-}
-.btn_red:hover {
-  background: #c53030;
-}
-.btn_green {
-  background: #1adb5e;
-  color: #0a3d1f;
-}
-.btn_green:hover {
-  background: #15c451;
-}
+.btn_outline:hover { background: #2a6fdb; color: #fff; }
+.btn_red    { background: #e53e3e; color: #fff; }
+.btn_red:hover { background: #c53030; }
+.btn_green  { background: #1adb5e; color: #0a3d1f; }
+.btn_green:hover { background: #15c451; }
 
 /* ===== MESSAGES ===== */
 .msg_success {
@@ -400,9 +384,7 @@ body {
   align-items: center;
   margin-bottom: 24px;
 }
-.page_header .page_title {
-  margin-bottom: 0;
-}
+.page_header .page_title { margin-bottom: 0; }
 .page_title {
   font-size: 1.4rem;
   font-weight: 600;
@@ -418,6 +400,16 @@ body {
   flex-wrap: wrap;
 }
 
+/* ===== EMPTY STATE ===== */
+.empty {
+  text-align: center;
+  color: #555;
+  padding: 40px;
+  font-size: 0.9rem;
+  background: #1a1a1a;
+  border-radius: 10px;
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 900px) {
   .navbar { padding: 0 20px; }
@@ -426,7 +418,6 @@ body {
   .sidebar_item { padding: 12px 16px; font-size: 13px; }
   .main { padding: 20px; }
   .profile_grid { grid-template-columns: 1fr; }
-  .stats_grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 600px) {

@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<% String ctx = request.getContextPath(); %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,18 +7,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard – KickOff</title>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="<%= ctx %>/CSS/admindashboard.css"/>
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/CSS/admindashboard.css"/>
 </head>
 <body>
 
   <!-- ===== NAVBAR ===== -->
   <nav class="navbar">
-    <a href="<%= ctx %>/Pages/Root/Homepage.jsp" class="navbar_logo">Kick<span>Off</span></a>
+    <a href="${pageContext.request.contextPath}/Pages/Root/Homepage.jsp" class="navbar_logo">Kick<span>Off</span></a>
     <ul class="navbar_links">
-      <li><a href="<%= ctx %>/Pages/Root/Homepage.jsp">Home</a></li>
-      <li><a href="<%= ctx %>/Pages/Root/grounds.jsp">Grounds</a></li>
-      <li><a href="<%= ctx %>/Pages/Root/teams.jsp">Teams</a></li>
-      <li><a href="<%= ctx %>/Pages/Root/about.jsp">About</a></li>
+      <li><a href="${pageContext.request.contextPath}/Pages/Root/Homepage.jsp">Home</a></li>
+      <li><a href="${pageContext.request.contextPath}/Pages/Root/grounds.jsp">Grounds</a></li>
+      <li><a href="${pageContext.request.contextPath}/Pages/Root/teams.jsp">Teams</a></li>
+      <li><a href="${pageContext.request.contextPath}/Pages/Root/about.jsp">About</a></li>
     </ul>
     <span class="admin_badge">Admin</span>
   </nav>
@@ -28,12 +27,12 @@
 
     <!-- ===== SIDEBAR ===== -->
     <aside class="sidebar">
-      <a href="<%= ctx %>/AdminServlet"              class="sidebar_item active">Overview</a>
-      <a href="<%= ctx %>/Pages/Admin/users.jsp"     class="sidebar_item">Users</a>
-      <a href="<%= ctx %>/Pages/Admin/grounds.jsp"   class="sidebar_item">Grounds</a>
-      <a href="<%= ctx %>/Pages/Admin/teams.jsp"     class="sidebar_item">Teams</a>
-      <a href="<%= ctx %>/Pages/Admin/bookings.jsp"  class="sidebar_item">Booking Requests</a>
-      <a href="<%= ctx %>/LogoutServlet"             class="sidebar_item">Logout</a>
+      <a href="${pageContext.request.contextPath}/AdminServlet"             class="sidebar_item active">Overview</a>
+      <a href="${pageContext.request.contextPath}/Pages/Admin/users.jsp"    class="sidebar_item">Users</a>
+      <a href="${pageContext.request.contextPath}/Pages/Admin/grounds.jsp"  class="sidebar_item">Grounds</a>
+      <a href="${pageContext.request.contextPath}/Pages/Admin/teams.jsp"    class="sidebar_item">Teams</a>
+      <a href="${pageContext.request.contextPath}/Pages/Admin/bookings.jsp" class="sidebar_item">Booking Requests</a>
+      <a href="${pageContext.request.contextPath}/LogoutServlet"            class="sidebar_item">Logout</a>
     </aside>
 
     <!-- ===== MAIN ===== -->
@@ -42,37 +41,49 @@
       <p class="page_title">Overview</p>
 
       <%-- Success / Error messages --%>
-      <% if (request.getAttribute("successMsg") != null) { %>
-        <div class="msg_success"><%= request.getAttribute("successMsg") %></div>
-      <% } %>
-      <% if (request.getAttribute("errorMsg") != null) { %>
-        <div class="msg_error"><%= request.getAttribute("errorMsg") %></div>
-      <% } %>
+      <c:if test="${not empty requestScope.successMsg}">
+        <div class="msg_success">${requestScope.successMsg}</div>
+      </c:if>
+      <c:if test="${not empty requestScope.errorMsg}">
+        <div class="msg_error">${requestScope.errorMsg}</div>
+      </c:if>
 
       <!-- ===== STAT CARDS ===== -->
       <div class="stats_grid">
         <div class="stat_card">
           <div class="stat_label">Total Teams</div>
           <div class="stat_value">
-            <%= request.getAttribute("totalTeams") != null ? request.getAttribute("totalTeams") : "0" %>
+            <c:choose>
+              <c:when test="${not empty requestScope.totalTeams}">${requestScope.totalTeams}</c:when>
+              <c:otherwise>0</c:otherwise>
+            </c:choose>
           </div>
         </div>
         <div class="stat_card">
           <div class="stat_label">Total Users</div>
           <div class="stat_value">
-            <%= request.getAttribute("totalUsers") != null ? request.getAttribute("totalUsers") : "0" %>
+            <c:choose>
+              <c:when test="${not empty requestScope.totalUsers}">${requestScope.totalUsers}</c:when>
+              <c:otherwise>0</c:otherwise>
+            </c:choose>
           </div>
         </div>
         <div class="stat_card">
           <div class="stat_label">Grounds</div>
           <div class="stat_value">
-            <%= request.getAttribute("totalGrounds") != null ? request.getAttribute("totalGrounds") : "0" %>
+            <c:choose>
+              <c:when test="${not empty requestScope.totalGrounds}">${requestScope.totalGrounds}</c:when>
+              <c:otherwise>0</c:otherwise>
+            </c:choose>
           </div>
         </div>
         <div class="stat_card">
           <div class="stat_label">Bookings</div>
           <div class="stat_value">
-            <%= request.getAttribute("totalBookings") != null ? request.getAttribute("totalBookings") : "0" %>
+            <c:choose>
+              <c:when test="${not empty requestScope.totalBookings}">${requestScope.totalBookings}</c:when>
+              <c:otherwise>0</c:otherwise>
+            </c:choose>
           </div>
         </div>
       </div>
@@ -93,7 +104,7 @@
                 </div>
                 <div class="list_item_right">
                   <span class="badge badge_blue">${user.role}</span>
-                  <a href="<%= ctx %>/AdminServlet?action=deleteUser&id=${user.userId}"
+                  <a href="${pageContext.request.contextPath}/AdminServlet?action=deleteUser&id=${user.userId}"
                      class="btn btn_red"
                      onclick="return confirm('Delete this user?')">Delete</a>
                 </div>
@@ -128,9 +139,9 @@
                     </c:when>
                     <c:when test="${booking.status == 'pending'}">
                       <span class="badge badge_yellow">Pending</span>
-                      <a href="<%= ctx %>/AdminServlet?action=approveBooking&id=${booking.bookingId}"
+                      <a href="${pageContext.request.contextPath}/AdminServlet?action=approveBooking&id=${booking.bookingId}"
                          class="btn btn_green">Approve</a>
-                      <a href="<%= ctx %>/AdminServlet?action=rejectBooking&id=${booking.bookingId}"
+                      <a href="${pageContext.request.contextPath}/AdminServlet?action=rejectBooking&id=${booking.bookingId}"
                          class="btn btn_red">Reject</a>
                     </c:when>
                     <c:otherwise>
@@ -171,7 +182,7 @@
                       <span class="badge badge_red">Closed</span>
                     </c:otherwise>
                   </c:choose>
-                  <a href="<%= ctx %>/AdminServlet?action=deleteTeam&id=${team.teamId}"
+                  <a href="${pageContext.request.contextPath}/AdminServlet?action=deleteTeam&id=${team.teamId}"
                      class="btn btn_red"
                      onclick="return confirm('Delete this team?')">Delete</a>
                 </div>

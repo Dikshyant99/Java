@@ -3,8 +3,6 @@
 <%@ page import="com.kickoff.util.CookiesUtil" %>
 <%@ page import="jakarta.servlet.http.Cookie" %>
 <%
-    String ctx = request.getContextPath();
-
     // Read remember me cookies to pre-fill email and checkbox
     String savedEmail = "";
     boolean remembered = false;
@@ -16,7 +14,6 @@
         savedEmail = emailCookie.getValue();
     }
     if (rememberCookie != null) {
-    	
         remembered = true;
     }
 %>
@@ -27,22 +24,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login – KickOff</title>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="<%= ctx %>/CSS/login.css"/>
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/CSS/login.css"/>
 </head>
 <body>
 
   <!-- ===== NAVBAR ===== -->
   <nav class="navbar">
-    <a href="<%= ctx %>/Pages/Root/Homepage.jsp" class="navbar_logo">Kick<span>Off</span></a>
+    <a href="${pageContext.request.contextPath}/Pages/Root/Homepage.jsp" class="navbar_logo">
+      Kick<span>Off</span>
+    </a>
     <ul class="navbar_links">
-      <li><a href="<%= ctx %>/Pages/Root/Homepage.jsp">Home</a></li>
-      <li><a href="<%= ctx %>/Pages/Root/grounds.jsp">Grounds</a></li>
-      <li><a href="<%= ctx %>/Pages/Root/teams.jsp">Teams</a></li>
-      <li><a href="<%= ctx %>/Pages/Root/about.jsp">About</a></li>
+      <li><a href="${pageContext.request.contextPath}/Pages/Root/Homepage.jsp">Home</a></li>
+      <li><a href="${pageContext.request.contextPath}/Pages/Root/grounds.jsp">Grounds</a></li>
+      <li><a href="${pageContext.request.contextPath}/Pages/Root/teams.jsp">Teams</a></li>
+      <li><a href="${pageContext.request.contextPath}/Pages/Root/about.jsp">About</a></li>
     </ul>
     <div class="navbar_actions">
-      <a href="<%= ctx %>/Pages/Auth/login.jsp" class="login_btn">Login</a>
-      <a href="<%= ctx %>/Pages/Auth/Register.jsp" class="register_btn">Register</a>
+      <a href="${pageContext.request.contextPath}/Pages/Auth/login.jsp" class="login_btn">Login</a>
+      <a href="${pageContext.request.contextPath}/Pages/Auth/Register.jsp" class="register_btn">Register</a>
     </div>
   </nav>
 
@@ -51,7 +50,9 @@
     <div class="auth_card">
 
       <div class="auth_brand">
-        <a href="<%= ctx %>/Pages/Root/Homepage.jsp">Kick<span>Off</span></a>
+        <a href="${pageContext.request.contextPath}/Pages/Root/Homepage.jsp">
+          Kick<span>Off</span>
+        </a>
       </div>
       <p class="auth_heading">Welcome back</p>
       <p class="auth_subheading">Log in to book grounds and manage your teams</p>
@@ -68,7 +69,7 @@
         <div class="msg_success">Account created successfully! Please log in.</div>
       </c:if>
 
-      <form action="<%= ctx %>/LoginServlet" method="post">
+      <form action="${pageContext.request.contextPath}/LoginServlet" method="post">
 
         <div class="form_group">
           <label class="form_label" for="email">Email address</label>
@@ -100,7 +101,9 @@
 
       <p class="auth_footer_text">
         Don't have an account?
-        <a href="<%= ctx %>/Pages/Auth/Register.jsp">Sign up for free</a>
+        <a href="${pageContext.request.contextPath}/Pages/Auth/Register.jsp">
+          Sign up for free
+        </a>
       </p>
 
     </div>
@@ -108,11 +111,13 @@
 
   <!-- ===== FOOTER ===== -->
   <footer class="footer">
-    <a href="<%= ctx %>/Pages/Root/Homepage.jsp" class="footer_logo">Kick<span>Off</span></a>
+    <a href="${pageContext.request.contextPath}/Pages/Root/Homepage.jsp" class="footer_logo">
+      Kick<span>Off</span>
+    </a>
     <ul class="footer_links">
-      <li><a href="<%= ctx %>/Pages/Root/Homepage.jsp">Home</a></li>
-      <li><a href="<%= ctx %>/Pages/Root/about.jsp">About</a></li>
-      <li><a href="<%= ctx %>/Pages/Root/contact.jsp">Contact</a></li>
+      <li><a href="${pageContext.request.contextPath}/Pages/Root/Homepage.jsp">Home</a></li>
+      <li><a href="${pageContext.request.contextPath}/Pages/Root/about.jsp">About</a></li>
+      <li><a href="${pageContext.request.contextPath}/Pages/Root/contact.jsp">Contact</a></li>
     </ul>
     <p class="footer_copy">© 2026 KickOff. All rights reserved.</p>
   </footer>

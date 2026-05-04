@@ -4,7 +4,6 @@ import com.kickoff.model.User;
 import com.kickoff.service.UserService;
 import com.kickoff.util.CookiesUtil;
 import com.kickoff.util.SessionUtil;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -12,7 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/LoginServlet")
+@WebServlet(asyncSupported=true,urlPatterns={"/LoginServlet"})
 public class LoginServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
@@ -31,63 +30,62 @@ public class LoginServlet extends HttpServlet {
 
         request.setCharacterEncoding("UTF-8");
 
-        String email    = request.getParameter("email");
-        String password = request.getParameter("password");
+        // Read form fields
+        String email      = request.getParameter("email");
+        String password   = request.getParameter("password");
         String rememberMe = request.getParameter("rememberMe");
-        
-        //Get specific result from service
-   
+
+        // Get specific result from service
         String result = userService.checkLogin(email, password);
 
         if (result.equals("success")) {
 
-            // Get full user object from database
-            User user = userService.getUserByEmail(email); 
+            // Get full User object from database
+            User user = userService.getUserByEmail(email);
 
-            //====Session===
-            //Stores user details in session
-            SessionUtil.setAttribute(request,"loggedIn",true);
-            SessionUtil.setAttribute(request, "userId", user.getUserId());
-            SessionUtil.setAttribute(request, "firstName", user.getFirstName());
+            // SET SESSION
+            // Store all user details in session
+            SessionUtil.setAttribute(request, "loggedIn",   true);
+            SessionUtil.setAttribute(request, "userId",     user.getUserId());
+            SessionUtil.setAttribute(request, "firstName",  user.getFirstName());
             SessionUtil.setAttribute(request, "lastName",   user.getLastName());
             SessionUtil.setAttribute(request, "email",      user.getEmail());
+            SessionUtil.setAttribute(request, "phone",      user.getPhone());
             SessionUtil.setAttribute(request, "sport",      user.getSport());
             SessionUtil.setAttribute(request, "skillLevel", user.getSkillLevel());
             SessionUtil.setAttribute(request, "role",       user.getRole());
-            SessionUtil.setAttribute(request, "image", user.getImage());
-            SessionUtil.setAttribute(request, "image",     user.getImage());     
-            SessionUtil.setAttribute(request, "phone",     user.getPhone());      
-            SessionUtil.setAttribute(request, "createdAt", user.getCreatedAt());  
-            
-            //Cookie
-            if("on".equals(rememberMe)) {
-            	CookiesUtil.addCookie(response, "userEmail", email, 7*24*60*60);
-            	CookiesUtil.addCookie(response, "rememberMe", "true",7*24*60*60);
-            	
+            SessionUtil.setAttribute(request, "image",      user.getImage());
+            SessionUtil.setAttribute(request, "createdAt",  user.getCreatedAt());
+
+            // SET COOKIES 
+            if ("on".equals(rememberMe)) {
+                // Remember me ticked save for 7 days
+                CookiesUtil.addCookie(response, "userEmail",  email,  7 * 24 * 60 * 60);
+                CookiesUtil.addCookie(response, "rememberMe", "true", 7 * 24 * 60 * 60);
             } else {
-            	//Not ticked
-            	CookiesUtil.deleteCookie(response, "userEmail");
-            	CookiesUtil.deleteCookie(response,"rememberMe");
-            	
+                // Delete cookies
+                CookiesUtil.deleteCookie(response, "userEmail");
+                CookiesUtil.deleteCookie(response, "rememberMe");
             }
 
-           
+            // Redirect to admin or user
             if (user.getRole().equals("admin")) {
                 response.sendRedirect(request.getContextPath()
-                    + "/Pages/Admin/dashboard.jsp");
+                    + "/AdminServlet");  
             } else {
+                System.out.println("USER LOGIN  redirecting to ProfileServlet");
                 response.sendRedirect(request.getContextPath()
-                    + "/Pages/Root/Homepage.jsp");
+                    + "/ProfileServlet");
             }
 
         } else if (result.equals("wrong_password")) {
-            
             request.setAttribute("errorMsg", "Wrong password. Please try again.");
             request.getRequestDispatcher("/Pages/Auth/login.jsp")
                    .forward(request, response);
 
         } else if (result.equals("user_not_found")) {
-            request.setAttribute("errorMsg", "No account found with this email. Please register.");
+            request.setAttribute("errorMsg",
+                "No account found with this email. Please register.");
             request.getRequestDispatcher("/Pages/Auth/login.jsp")
                    .forward(request, response);
 

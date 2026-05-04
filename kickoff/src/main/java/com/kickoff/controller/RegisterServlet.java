@@ -10,8 +10,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import java.io.IOException;
 
-@WebServlet("/RegisterServlet")
-@MultipartConfig                          // <-- required for file upload
+@WebServlet(asyncSupported=true,urlPatterns={"/RegisterServlet"})
+@MultipartConfig                    
 public class RegisterServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private UserService userService = new UserService();
@@ -21,6 +21,7 @@ public class RegisterServlet extends HttpServlet {
             throws ServletException, IOException {
         request.getRequestDispatcher("/Pages/Auth/Register.jsp")
                .forward(request, response);
+        
     }
 
     @Override
@@ -28,7 +29,7 @@ public class RegisterServlet extends HttpServlet {
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
 
-        // IMAGE upload - must come before reading other parameters
+        // IMAGE upload
         Part filePart = request.getPart("image");
         String fileName = (filePart != null) ? filePart.getSubmittedFileName() : null;
 
