@@ -68,4 +68,130 @@
       </c:choose>
     </div>
   </nav>
+ <div class="layout">
 
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar">
+      <a href="${pageContext.request.contextPath}/ProfileServlet"          class="sidebar_item active">My Profile</a>
+      <a href="${pageContext.request.contextPath}/Pages/User/myteam.jsp"   class="sidebar_item">My Team</a>
+      <a href="${pageContext.request.contextPath}/Pages/User/bookings.jsp" class="sidebar_item">My Bookings</a>
+      <a href="${pageContext.request.contextPath}/LogoutServlet"           class="sidebar_item">Logout</a>
+    </aside>
+
+    <!-- ===== MAIN ===== -->
+    <main class="main">
+
+      <!-- Flash messages -->
+      <c:if test="${not empty sessionScope.successMsg}">
+        <div class="msg_success">${sessionScope.successMsg}</div>
+        <c:remove var="successMsg" scope="session"/>
+      </c:if>
+      <c:if test="${not empty sessionScope.errorMsg}">
+        <div class="msg_error">${sessionScope.errorMsg}</div>
+        <c:remove var="errorMsg" scope="session"/>
+      </c:if>
+
+      <c:if test="${empty requestScope.user}">
+        <div class="msg_error">
+          Could not load profile. Please
+          <a href="${pageContext.request.contextPath}/Pages/Auth/login.jsp">login again</a>.
+        </div>
+      </c:if>
+
+      <c:if test="${not empty requestScope.user}">
+        <div class="profile_card">
+
+          <!-- Avatar + name -->
+          <div class="profile_top">
+            <div class="profile_avatar">
+              <c:choose>
+                <c:when test="${not empty user.image}">
+                  <img src="${pageContext.request.contextPath}/${user.image}"
+                       class="profile_avatar_img" alt="Profile"/>
+                </c:when>
+                <c:otherwise>
+                  <%= session.getAttribute("firstName") != null ?
+                      session.getAttribute("firstName").toString().substring(0,1).toUpperCase() : "U" %>
+                </c:otherwise>
+              </c:choose>
+            </div>
+            <div class="profile_info">
+              <h2 class="profile_name">${user.firstName} ${user.lastName}</h2>
+              <p class="profile_role">${user.role}</p>
+            </div>
+          </div>
+
+          <hr class="profile_divider"/>
+
+          <!-- Details grid -->
+          <div class="profile_grid">
+
+            <div class="profile_field">
+              <span class="field_label">Email</span>
+              <span class="field_value">${user.email}</span>
+            </div>
+
+            <div class="profile_field">
+              <span class="field_label">Phone</span>
+              <span class="field_value">
+                <c:choose>
+                  <c:when test="${not empty user.phone}">${user.phone}</c:when>
+                  <c:otherwise>Not provided</c:otherwise>
+                </c:choose>
+              </span>
+            </div>
+
+            <div class="profile_field">
+              <span class="field_label">Favourite Sport</span>
+              <span class="field_value">
+                <c:choose>
+                  <c:when test="${not empty user.sport}">${user.sport}</c:when>
+                  <c:otherwise>Not set</c:otherwise>
+                </c:choose>
+              </span>
+            </div>
+
+            <div class="profile_field">
+              <span class="field_label">Skill Level</span>
+              <span class="field_value">
+                <span class="badge badge_blue">
+                  <c:choose>
+                    <c:when test="${not empty user.skillLevel}">${user.skillLevel}</c:when>
+                    <c:otherwise>Not set</c:otherwise>
+                  </c:choose>
+                </span>
+              </span>
+            </div>
+
+            <div class="profile_field">
+              <span class="field_label">Member Since</span>
+              <span class="field_value">${user.createdAt}</span>
+            </div>
+
+            <div class="profile_field">
+              <span class="field_label">Role</span>
+              <span class="field_value">
+                <span class="badge badge_green">${user.role}</span>
+              </span>
+            </div>
+
+          </div>
+
+          <hr class="profile_divider"/>
+
+          <!-- Actions -->
+          <div class="profile_actions">
+            <a href="${pageContext.request.contextPath}/EditProfileServlet"
+               class="btn btn_primary">Edit Profile</a>
+            <a href="${pageContext.request.contextPath}/EditProfileServlet"
+               class="btn btn_outline">Change Password</a>
+          </div>
+
+        </div>
+      </c:if>
+
+    </main>
+  </div>
+
+</body>
+</html>
