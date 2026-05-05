@@ -46,3 +46,26 @@
   </style>
 </head>
 <body>
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar">
+    <a href="${pageContext.request.contextPath}/Pages/Root/Homepage.jsp" class="navbar_logo">Kick<span>Off</span></a>
+    <ul class="navbar_links">
+      <li><a href="${pageContext.request.contextPath}/Pages/Root/Homepage.jsp">Home</a></li>
+      <li><a href="${pageContext.request.contextPath}/Pages/Root/grounds.jsp">Grounds</a></li>
+      <li><a href="${pageContext.request.contextPath}/Pages/Root/teams.jsp">Teams</a></li>
+      <li><a href="${pageContext.request.contextPath}/Pages/Root/about.jsp">About</a></li>
+    </ul>
+    <div class="navbar_avatar">
+      <c:choose>
+        <c:when test="${not empty user.image}">
+          <img src="${pageContext.request.contextPath}/${user.image}"
+               class="avatar_img" alt="Profile"/>
+        </c:when>
+        <c:otherwise>
+          <img src="${pageContext.request.contextPath}/Assets/default-avatar.png"
+               class="avatar_img" alt="Profile"/>
+        </c:otherwise>
+      </c:choose>
+    </div>
+  </nav>
+
